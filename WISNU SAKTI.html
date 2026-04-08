@@ -1,0 +1,414 @@
+    <!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>ID DIGITAL WISNU SAKTI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #F9F8F3;
+            --text-color: #2D2424;
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-border: rgba(255, 255, 255, 0.7);
+            --shadow-3d: 6px 6px 15px rgba(0, 0, 0, 0.08), inset -3px -3px 6px rgba(255, 255, 255, 0.5), inset 3px 3px 6px rgba(0, 0, 0, 0.02);
+            --maroon-solid: #800000;
+            --radius-uniform: 20px;
+        }
+
+        [data-theme='dark'] {
+            --bg-color: #0d0d0d;
+            --text-color: #e0e0e0;
+            --glass-bg: rgba(25, 25, 25, 0.6);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --shadow-3d: 8px 8px 20px rgba(0, 0, 0, 0.4), inset -2px -2px 5px rgba(255, 255, 255, 0.05), inset 2px 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        body { 
+            font-family: 'Poppins', sans-serif; 
+            background: var(--bg-color); 
+            color: var(--text-color);
+            margin: 0; padding: 0;
+            overflow: hidden;
+            transition: all 0.5s ease;
+            height: 100vh; width: 100vw;
+        }
+
+        .liquid-bg {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; background: var(--bg-color);
+            overflow: hidden;
+        }
+        .blob {
+            position: absolute; border-radius: 50%; filter: blur(80px);
+            opacity: 0.25; animation: move 25s infinite alternate ease-in-out;
+        }
+        .blob-1 { width: 600px; height: 600px; background: #800000; top: -15%; left: -10%; }
+        .blob-2 { width: 500px; height: 500px; background: #ffffff; bottom: -10%; right: -5%; animation-delay: -5s; }
+        .blob-3 { width: 400px; height: 400px; background: #4a0404; top: 40%; left: 30%; animation-delay: -10s; }
+        
+        @keyframes move {
+            from { transform: translate(0, 0) scale(1); }
+            to { transform: translate(80px, 40px) scale(1.1) rotate(20deg); }
+        }
+
+        .glass-3d {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-3d);
+            border-radius: var(--radius-uniform);
+        }
+
+        .id-card-frame {
+            width: 100%; max-width: 340px; padding: 20px 18px;
+            display: flex; flex-direction: column; align-items: center;
+            position: relative; z-index: 10;
+        }
+
+        .glass-clean {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            box-shadow: none !important;
+            border-radius: var(--radius-uniform);
+        }
+
+        .btn-3d {
+            background: var(--glass-bg);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--shadow-3d);
+            border-radius: 16px;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            color: var(--maroon-solid);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .btn-3d:active { transform: scale(0.92); }
+
+        .btn-maroon-3d {
+            background: linear-gradient(145deg, #a00000, #700000);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 6px 6px 15px rgba(128, 0, 0, 0.2), inset -3px -3px 6px rgba(0, 0, 0, 0.2);
+            color: white !important;
+            border-radius: var(--radius-uniform);
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .page-container {
+            width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            padding: 0 20px;
+        }
+
+        .main-wrapper {
+            display: flex; flex-direction: column; align-items: center;
+            width: 100%; transform: translateY(-30px);
+        }
+
+        .page { display: none; width: 100%; flex-direction: column; align-items: center; }
+        .page-active { display: flex; animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.97); } to { opacity: 1; transform: scale(1); } }
+
+        .gap-1cm { margin-top: 40px; }
+
+        .content-scroll { 
+            overflow-y: auto; flex: 1; padding: 20px 2px; width: 100%; max-width: 360px;
+            -webkit-overflow-scrolling: touch; scrollbar-width: none;
+        }
+        .content-scroll::-webkit-scrollbar { display: none; }
+
+        .smart-handle {
+            position: fixed; top: 30px; right: 0; z-index: 100;
+            width: 12px; height: 80px; background: var(--maroon-solid);
+            border-radius: 10px 0 0 10px; box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+        }
+        .smart-handle::after { content: ''; position: absolute; left: 4px; top: 25px; width: 2px; height: 30px; background: rgba(255,255,255,0.4); border-radius: 2px; }
+
+        .smart-panel-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.1); backdrop-filter: blur(2px); z-index: 90; display: none; opacity: 0; transition: 0.4s; }
+        .smart-panel-overlay.active { display: block; opacity: 1; }
+
+        .smart-panel-window {
+            position: fixed; top: 30px; right: -250px; width: 190px; height: auto; padding: 18px; z-index: 95;
+            transition: 0.6s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; flex-direction: column; gap: 14px; border-radius: 20px 0 20px 20px;
+        }
+        .smart-panel-window.active { right: 15px; }
+
+        /* --- 3-WAY THEME SWITCHER CAPSULE --- */
+        .theme-capsule-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .theme-capsule {
+            display: flex;
+            width: 100%;
+            height: 32px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 100px;
+            position: relative;
+            padding: 2px;
+            box-shadow: inset 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .theme-btn {
+            flex: 1;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 11px;
+            color: var(--text-color);
+            transition: 0.3s;
+            opacity: 0.5;
+        }
+
+        .theme-btn.active {
+            opacity: 1;
+            color: white;
+        }
+
+        .theme-indicator {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: calc(33.33% - 2px);
+            height: 28px;
+            background: var(--maroon-solid);
+            border-radius: 100px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 1;
+        }
+
+        .theme-label-text {
+            font-size: 8px;
+            font-weight: 700;
+            color: var(--maroon-solid);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            opacity: 0.7;
+        }
+
+        .shiny-text {
+            background: linear-gradient(120deg, var(--text-color) 40%, #ffffff 50%, var(--text-color) 60%);
+            background-size: 200% auto; -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            animation: shine 3.5s linear infinite; display: inline-block;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        .ig-story-container { position: relative; width: 92px; height: 92px; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px auto; }
+        .ig-story-home { width: 75px; height: 75px; } 
+        .ig-story-ring { position: absolute; width: 100%; height: 100%; background: linear-gradient(45deg, #f09433, #dc2743, #cc2366, #bc1888); border-radius: 50%; animation: rotateHue 4s linear infinite; }
+        .ig-inner-3d { position: relative; z-index: 2; width: 84px; height: 84px; background: var(--bg-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+        .ig-inner-home { width: 69px; height: 69px; }
+        @keyframes rotateHue { from { filter: hue-rotate(0deg); } to { filter: hue-rotate(360deg); } }
+
+        .skill-item { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 6px; font-size: 10.5px; }
+        .dot { width: 5px; height: 5px; background: var(--maroon-solid); border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+        .panel-label { font-size: 8px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; opacity: 0.5; margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="smart-handle" onclick="togglePanel()"></div>
+    <div class="smart-panel-overlay" id="panelOverlay" onclick="togglePanel()"></div>
+    <div class="smart-panel-window glass-3d" id="smartPanel">
+        <div>
+            <p class="panel-label">Appearance</p>
+            <div class="theme-capsule-container">
+                <div class="theme-capsule">
+                    <!-- Penanda posisi aktif -->
+                    <div class="theme-indicator" id="themeIndicator"></div>
+                    
+                    <div class="theme-btn" id="btn-light" onclick="setTheme('light')">
+                        <i class="fas fa-sun"></i>
+                    </div>
+                    <div class="theme-btn" id="btn-dark" onclick="setTheme('dark')">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <div class="theme-btn" id="btn-system" onclick="setTheme('system')">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                </div>
+                <!-- Keterangan Mode di bawah tombol -->
+                <p class="theme-label-text" id="themeLabel">Mode Sistem</p>
+            </div>
+        </div>
+        <div>
+            <p class="panel-label">Links</p>
+            <a href="https://sempurnain.github.io/direktori-id-digital-hmps-pgmi-uin-malang/" target="_blank" class="btn-3d w-full h-9 text-[9px] font-bold tracking-wider uppercase"><i class="fas fa-users mr-2"></i> Member Lain</a>
+        </div>
+    </div>
+
+    <div class="liquid-bg">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <div class="page-container">
+        <!-- ================= HOME PAGE ================= -->
+        <div id="main-page" class="page page-active">
+            <div class="main-wrapper">
+                <div class="w-full max-w-[340px] p-4 mb-3 text-center glass-3d">
+                    <div class="inline-flex items-center gap-2 bg-white/60 px-3 py-1 rounded-full mb-2 shadow-sm border border-maroon-100/20">
+                        <span class="w-1.5 h-1.5 rounded-full bg-[#800000] animate-pulse"></span>
+                        <span class="text-[7px] font-bold tracking-[0.2em] text-[#800000] uppercase">id digital member of</span>
+                    </div>
+                    <h1 class="text-[15px] font-bold tracking-tight mb-0 uppercase leading-tight shiny-text whitespace-nowrap">HMPS PGMI UIN MALANG</h1>
+                </div>
+
+                <div class="id-card-frame glass-3d">
+                    <div class="glass-3d p-4 mb-5 w-full text-center border-none shadow-sm" style="background: rgba(255,255,255,0.25)">
+                        <div class="ig-story-container ig-story-home">
+                            <div class="ig-story-ring"></div>
+                            <div class="ig-inner-3d ig-inner-home">
+                                <img src="https://res.cloudinary.com/dr3evkwcu/image/upload/v1774692704/M._AWALUDIN_KAMIL_ezawsf.jpg" alt="Profile" class="w-[64px] h-[64px] rounded-full object-cover">
+                            </div>
+                        </div>
+                        <h2 class="text-[11px] font-bold uppercase mb-0.5">WISNU SAKTI</h2>
+                        <p class="text-[7px] font-bold tracking-widest uppercase opacity-60">ANGGOTA DIVISI NETWORKING</p>
+                    </div>
+
+                    <div class="space-y-3 w-full">
+                        <a href="https://youtube.com/@hmpspgmiuinmalang7341" target="_blank" class="btn-3d h-10 uppercase text-[9px] font-semibold tracking-wide"><i class="fab fa-youtube mr-3"></i> Youtube Official</a>
+                        <a href="https://www.instagram.com/sahabatpgmiuinmlg" target="_blank" class="btn-3d h-10 uppercase text-[9px] font-semibold tracking-wide"><i class="fab fa-instagram mr-3"></i> Instagram Official</a>
+                        <a href="https://www.tiktok.com/@sahabatpgmiuinmlg" target="_blank" class="btn-3d h-10 uppercase text-[9px] font-semibold tracking-wide"><i class="fab fa-tiktok mr-3"></i> TikTok Official</a>
+                        <a href="https://hmpspgmiuinmalang.web.id/" target="_blank" class="btn-3d h-10 uppercase text-[9px] font-semibold tracking-wide"><i class="fas fa-globe mr-3"></i> Website Official</a>
+                    </div>
+
+                    <div class="gap-1cm w-full">
+                        <button onclick="goToIdentity()" class="btn-maroon-3d w-full h-12 uppercase tracking-[0.2em] text-[10px]">Profil Identitas Diri</button>
+                    </div>
+                    
+                    <p class="text-[6px] text-center mt-5 opacity-40 uppercase tracking-[0.4em]">HMPS PGMI • MMXXVI</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= IDENTITAS DIRI PAGE ================= -->
+        <div id="portfolio-page" class="page h-full">
+            <div class="content-scroll scrollbar-hide pt-10">
+                <div class="glass-clean p-6 mb-4 text-center">
+                    <div class="ig-story-container">
+                        <div class="ig-story-ring"></div>
+                        <div class="ig-inner-3d">
+                            <img src="https://res.cloudinary.com/dr3evkwcu/image/upload/v1774692704/M._AWALUDIN_KAMIL_ezawsf.jpg" alt="Profile" class="w-[78px] h-[78px] rounded-full object-cover">
+                        </div>
+                    </div>
+                    <h2 class="text-sm font-bold uppercase mb-1">WISNU SAKTI</h2>
+                    <p class="text-[8px] font-bold tracking-widest uppercase opacity-60">ANGGOTA DIVISI NETWORKING</p>
+                </div>
+
+                <div class="glass-clean p-4 mb-4 text-[9px] space-y-2">
+                    <div class="flex justify-between border-b border-black/5 pb-1"><b>Instansi</b><span>UIN Maulana Malik Ibrahim</span></div>
+                    <div class="flex justify-between border-b border-black/5 pb-1"><b>Prodi</b><span>Pendidikan Guru Madrasah Ibtidaiyah</span></div>
+                    <div class="flex justify-between"><b>Fakultas</b><span>Ilmu Tarbiyah dan Keguruan</span></div>
+                </div>
+
+                <div class="glass-clean p-4 mb-4">
+                    <h3 class="text-[9px] font-bold uppercase tracking-widest mb-2 border-l-2 border-[#800000] pl-2">Tentang Saya</h3>
+                    <p class="text-[9px] leading-relaxed text-justify italic opacity-80">Saya merupakan mahasiswa Program Studi Pendidikan Guru Madrasah Ibtidaiyah (PGMI), Fakultas Ilmu Tarbiyah dan Keguruan, yang memiliki semangat dan komitmen dalam mengembangkan kualitas pendidikan dasar. Saya memiliki minat pada inovasi pembelajaran, khususnya dalam merancang metode dan media yang kreatif, interaktif, serta sesuai dengan perkembangan zaman dan karakteristik siswa SD/MI. Selama perkuliahan, saya aktif meningkatkan kompetensi akademik, keterampilan teknologi pembelajaran, serta kemampuan berpikir kritis, komunikasi, dan kerja sama tim. Saya juga dikenal sebagai pribadi yang adaptif, bertanggung jawab, dan memiliki rasa ingin tahu yang tinggi. Dengan komitmen tersebut, saya berupaya menjadi pendidik profesional yang mampu menciptakan pembelajaran yang inspiratif, menyenangkan, dan bermakna, serta berkontribusi dalam membentuk generasi yang unggul dan berakhlak mulia.</p>
+                </div>
+
+                <div class="glass-clean p-4 mb-4">
+                    <h3 class="text-[9px] font-bold uppercase tracking-widest mb-2 border-l-2 border-[#800000] pl-2">Hard Skills</h3>
+                    <div class="space-y-0.5 mt-2">
+                        <div class="skill-item"><div class="dot"></div>Pengembangan media dan materi pembelajaran digital yang interaktif dan inovatif</div>
+                        <div class="skill-item"><div class="dot"></div>Penyusunan perangkat pembelajaran sesuai Kurikulum Merdeka</div>
+                        <div class="skill-item"><div class="dot"></div>Penerapan dan integrasi teknologi untuk mendukung efektivitas pembelajaran</div>
+                        <div class="skill-item"><div class="dot"></div>Desain konten edukatif berbasis visual dan audiovisual</div>
+                        <div class="skill-item"><div class="dot"></div>Pengelolaan serta evaluasi pembelajaran berbasis digital secara sistematis</div>
+                        <div class="skill-item"><div class="dot"></div>Pengetahuan dasar dalam berbagai cabang olahraga</div>
+                    </div>
+                </div>
+
+                <div class="glass-clean p-4 mb-4">
+                    <h3 class="text-[9px] font-bold uppercase tracking-widest mb-2 border-l-2 border-[#800000] pl-2">Soft Skills</h3>
+                    <div class="space-y-0.5 mt-2">
+                        <div class="skill-item"><div class="dot"></div>Mampu berkomunikasi secara efektif serta membangun hubungan interpersonal yang positif</div>
+                        <div class="skill-item"><div class="dot"></div>Memiliki kemampuan bekerja sama dalam tim disertai jiwa kepemimpinan dasar</div>
+                        <div class="skill-item"><div class="dot"></div>Terampil dalam berpikir kritis dan menyelesaikan permasalahan secara solutif</div>
+                        <div class="skill-item"><div class="dot"></div>Memiliki manajemen waktu yang baik dengan tingkat tanggung jawab yang tinggi</div>
+                        <div class="skill-item"><div class="dot"></div>Adaptif terhadap perubahan, kreatif dalam berpikir, dan berorientasi pada pembelajaran berkelanjutan</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 mb-6">
+                    <a href="https://www.instagram.com/wsnuskti?igsh=MWxnejZvODF3Zjkwdw==" target="_blank" class="btn-3d h-11 text-[9px] font-bold uppercase" style="box-shadow:none">IG</a>
+                    <a href="https://www.tiktok.com/@wisnuuu._7?_r=1&_t=ZS-95LJhK3nBEO94bY5kw5f9z" class="btn-3d h-11 text-[9px] font-bold uppercase" style="box-shadow:none">TikTok</a>
+                    <a href="https://wa.me/62'89514987723" target="_blank" class="btn-3d h-11 text-[9px] font-bold uppercase" style="box-shadow:none">WA</a>
+                    <a href="mailto:wsnuskti@gmail.com" class="btn-3d h-11 text-[9px] font-bold uppercase" style="box-shadow:none">Email</a>
+                </div>
+                <div class="text-center pb-10"><p class="text-[8px] italic opacity-60">Terima kasih telah berkunjung.</p></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function togglePanel() {
+            document.getElementById('smartPanel').classList.toggle('active');
+            document.getElementById('panelOverlay').classList.toggle('active');
+        }
+
+        // --- SISTEM TEMA 3 OPSI ---
+        function setTheme(mode) {
+            const root = document.documentElement;
+            const label = document.getElementById('themeLabel');
+            const indicator = document.getElementById('themeIndicator');
+            const buttons = document.querySelectorAll('.theme-btn');
+
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            if (mode === 'light') {
+                root.setAttribute('data-theme', 'light');
+                label.innerText = "Mode Terang";
+                indicator.style.transform = "translateX(0%)";
+                document.getElementById('btn-light').classList.add('active');
+            } else if (mode === 'dark') {
+                root.setAttribute('data-theme', 'dark');
+                label.innerText = "Mode Gelap";
+                indicator.style.transform = "translateX(100%)";
+                document.getElementById('btn-dark').classList.add('active');
+            } else {
+                // Mode Sistem
+                const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                root.setAttribute('data-theme', prefersDark ? 'dark' : 'light');
+                label.innerText = "Mode Sistem";
+                indicator.style.transform = "translateX(200%)";
+                document.getElementById('btn-system').classList.add('active');
+            }
+            localStorage.setItem('user-theme', mode);
+        }
+
+        // Cek preferensi tersimpan saat load
+        const savedTheme = localStorage.getItem('user-theme') || 'system';
+        setTheme(savedTheme);
+
+        function goToIdentity() {
+            document.getElementById('main-page').style.display = 'none';
+            document.getElementById('portfolio-page').style.display = 'flex';
+            document.getElementById('portfolio-page').classList.add('page-active');
+            history.pushState({page: 'identity'}, "Identity", "#identity");
+        }
+        function showHome() {
+            document.getElementById('portfolio-page').style.display = 'none';
+            document.getElementById('main-page').style.display = 'flex';
+            document.getElementById('main-page').classList.add('page-active');
+            document.getElementById('smartPanel').classList.remove('active');
+            document.getElementById('panelOverlay').classList.remove('active');
+        }
+        window.onpopstate = function() { showHome(); };
+    </script>
+</body>
+</html>
